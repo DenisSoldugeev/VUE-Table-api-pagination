@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1 class="title">Future Table</h1>
+    <div class="main">
+      <Table
+              :users_data="users"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Table from "./components/Table";
+import {mapActions, mapGetters} from "vuex";
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Table
+  },
+  computed: {
+    ...mapGetters(['users'])
+  },
+  methods: {
+    ...mapActions(['getUsers'])
+  },
+  mounted() {
+    this.getUsers()
   }
+
+
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.title {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin: 5rem 0;
+}
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
