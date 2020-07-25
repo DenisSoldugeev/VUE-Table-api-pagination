@@ -1,10 +1,19 @@
 <template>
     <div class="">
+        <AddForm />
+        <lable id="showUsers">Пользователей на странице</lable>
+        <select id="showUsers" class="custom-select w-25 mb-2 d-block" v-model="showUsers">
+            <option  value="10">10</option>
+            <option  value="20">20</option>
+            <option  value="30">30</option>
+            <option  value="40">40</option>
+            <option  value="50">50</option>
+        </select>
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
             <tr>
                 <th scope="col" @click="sortById">id <i class="fas fa-sort-down" :class="{ 'fa-sort-up': sortId }"></i></th>
-                <th scope="col" @click="sortByFirstName">First Name <i class="fas fa-sort-down" :class="{ 'fa-sort-up': sortFirstName }"></i></th>
+                <th scope="col" @click="sortByFirstName">First Name <i class="fas fa-sort-down" :class="{ 'fa-sort-up': sortFirstName}"></i></th>
                 <th scope="col" @click="sortByLastName">Last Name <i class="fas fa-sort-down" :class="{ 'fa-sort-up': sortLastName }"></i></th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone
@@ -37,11 +46,13 @@
 </template>
 
 <script>
+import AddForm from "./AddForm";
 import TableRow from "./TableRow";
     export default {
         name: "Table",
         components: {
-            TableRow
+            TableRow,
+            AddForm
         },
         props: {
             users_data: {
@@ -53,7 +64,7 @@ import TableRow from "./TableRow";
         },
         data: () => {
             return {
-                showUsers: 5,
+                showUsers: 10,
                 pageNumber: 1,
                 sortFirstName: true,
                 sortLastName: true,
@@ -105,10 +116,7 @@ import TableRow from "./TableRow";
     }
 </script>
 
-<style >
- .table {
-     width: 1140px;
- }
+<style>
  .table thead tr th {
      cursor: pointer;
  }
