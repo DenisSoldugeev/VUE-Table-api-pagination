@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div >
         <AddForm />
         <lable id="showUsers">Пользователей на странице</lable>
         <select id="showUsers" class="custom-select w-25 mb-2 d-block" v-model="showUsers">
