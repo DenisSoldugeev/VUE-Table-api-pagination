@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <button class="btn btn-primary mb-4" @click="showModal = true">Добавить в таблицу</button>
+        <button class="btn btn-primary" @click="showModal = true">Добавить в таблицу</button>
         <div class="modal d-block" v-if="showModal" @close="showModal = false" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -57,9 +57,17 @@ import {mapMutations} from 'vuex'
                     firstName: this.firstName,
                     lastName: this.lastName,
                     email: this.email,
-                    phone: this.phone
+                    phone: this.phone,
+                    address: {
+                        city: 'Информации нет, так как, вы добавили этого пользователя сами',
+                        state: 'Информации нет, так как, вы добавили этого пользователя сами',
+                        streetAddress: 'Информации нет, так как, вы добавили этого пользователя сами',
+                        zip: 0
+                    },
+                    description: 'Информации нет, так как, вы добавили этого пользователя сами'
                 })
                 this.id = this.firstName = this.lastName = this.email = this.phone = ''
+                this.showModal = false
             }
         }
     }

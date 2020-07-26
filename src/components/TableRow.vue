@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr @click="onClick(rowData)">
         <th scope="row">{{rowData.id}}</th>
         <td>{{rowData.firstName}}</td>
         <td>{{rowData.lastName}}</td>
@@ -11,6 +11,11 @@
 <script>
     export default {
         name: "TableRow",
+        data() {
+            return {
+                userInfo: {}
+            }
+        },
         props: {
             rowData: {
                 type: Object,
@@ -18,6 +23,12 @@
                     return {}
                 }
             }
+        },
+        methods: {
+            onClick(item) {
+                this.$emit('userInfo', item )
+
+            },
         }
 
     }

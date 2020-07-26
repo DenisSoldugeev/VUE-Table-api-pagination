@@ -1,14 +1,18 @@
 <template>
     <div >
-        <AddForm />
-        <lable id="showUsers">Пользователей на странице</lable>
-        <select id="showUsers" class="custom-select w-25 mb-2 d-block" v-model="showUsers">
-            <option  value="10">10</option>
-            <option  value="20">20</option>
-            <option  value="30">30</option>
-            <option  value="40">40</option>
-            <option  value="50">50</option>
-        </select>
+       <div class="d-flex justify-content-between m-4">
+           <AddForm />
+           <div>
+               <select  class="custom-select  mb-2 d-block" v-model="showUsers">
+                   <option  value="10">10</option>
+                   <option  value="20">20</option>
+                   <option  value="30">30</option>
+                   <option  value="40">40</option>
+                   <option  value="50">50</option>
+               </select>
+               <span class="text-success font-weight-bold">Пользователей на странице</span>
+           </div>
+       </div>
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
             <tr>
@@ -22,12 +26,34 @@
             </thead>
             <tbody>
             <TableRow
+                    @userInfo="userData"
                     v-for="row in paginationUsers"
                     :key="row.email"
                     :rowData="row"
             />
             </tbody>
         </table>
+        <div class="w-50">
+            <div class="card mb-2" v-if="showUserInfo">
+                <h3>{{userInfo.firstName + ' ' + userInfo.lastName}}: {{userInfo.id}}</h3>
+                <p>
+                    {{userInfo.description}}
+                </p>
+                <p>
+                    <span>Адрес проживания: <b>{{userInfo.address.streetAddress}}</b></span>
+                </p>
+                <p>
+                    <span>Город: <b>{{userInfo.address.city}}</b></span>
+                </p>
+                <p>
+                    <span>Провинция/штат: <b>{{userInfo.address.state}}</b></span>
+                </p>
+                <p>
+                    <span>Индекс: <b>{{userInfo.address.zip}}</b></span>
+                </p>
+            </div>
+            <p v-else>Вы никого не выбрали</p>
+        </div>
         <Paginate
                 :page-count="pages"
                 :click-handler="pageOn"
@@ -48,6 +74,7 @@
 <script>
 import AddForm from "./AddForm";
 import TableRow from "./TableRow";
+
     export default {
         name: "Table",
         components: {
@@ -68,7 +95,9 @@ import TableRow from "./TableRow";
                 pageNumber: 1,
                 sortFirstName: true,
                 sortLastName: true,
-                sortId: true
+                sortId: true,
+                userInfo: {},
+                showUserInfo: false
             }
         },
         computed: {
@@ -79,9 +108,13 @@ import TableRow from "./TableRow";
                 let from = (this.pageNumber - 1) * this.showUsers;
                 let to = from + this.showUsers
                 return this.users_data.slice(from, to);
-            }
+            },
         },
         methods: {
+            userData(data) {
+                this.userInfo = data
+                this.showUserInfo = true
+            },
             pageOn(page) {
                 this.pageNumber = page;
             },
@@ -123,4 +156,7 @@ import TableRow from "./TableRow";
  .pagination {
      justify-content: center;
  }
+    .card {
+        padding: 2rem;
+    }
 </style>
