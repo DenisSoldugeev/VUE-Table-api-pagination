@@ -2,6 +2,17 @@
     <div >
        <div class="d-flex justify-content-between m-4">
            <AddForm />
+           <div class=" d-flex ">
+               <div>
+                   <form @submit.prevent="searchClick" class="d-flex">
+                       <input type="text" class="form-control" v-model="search" required placeholder="Поиск по имени">
+                       <button  class="btn btn-success ml-2 mb-2">Найти</button>
+                   </form>
+               </div>
+                <div>
+                    <button  class="btn btn-danger ml-2 mb-2" @click="searchRemove">Сбросить</button>
+                </div>
+           </div>
            <div>
                <select  class="custom-select  mb-2 d-block" v-model="showUsers">
                    <option  value="10">10</option>
@@ -33,27 +44,11 @@
             />
             </tbody>
         </table>
-        <div class="w-50">
-            <div class="card mb-2" v-if="showUserInfo">
-                <h3>{{userInfo.firstName + ' ' + userInfo.lastName}}: {{userInfo.id}}</h3>
-                <p>
-                    {{userInfo.description}}
-                </p>
-                <p>
-                    <span>Адрес проживания: <b>{{userInfo.address.streetAddress}}</b></span>
-                </p>
-                <p>
-                    <span>Город: <b>{{userInfo.address.city}}</b></span>
-                </p>
-                <p>
-                    <span>Провинция/штат: <b>{{userInfo.address.state}}</b></span>
-                </p>
-                <p>
-                    <span>Индекс: <b>{{userInfo.address.zip}}</b></span>
-                </p>
-            </div>
-            <p v-else>Вы никого не выбрали</p>
-        </div>
+        <UserInfo
+            v-if="showUserInfo"
+            :userInfo="userInfo"
+        />
+        <p v-else>Вы никого не выбрали</p>
         <Paginate
                 :page-count="pages"
                 :click-handler="pageOn"
@@ -74,12 +69,14 @@
 <script>
 import AddForm from "./AddForm";
 import TableRow from "./TableRow";
+import UserInfo from "./UserInfo";
 
     export default {
         name: "Table",
         components: {
             TableRow,
-            AddForm
+            AddForm,
+            UserInfo
         },
         props: {
             users_data: {
@@ -97,7 +94,9 @@ import TableRow from "./TableRow";
                 sortLastName: true,
                 sortId: true,
                 userInfo: {},
-                showUserInfo: false
+                showUserInfo: false,
+                search: '',
+                searchResult: ''
             }
         },
         computed: {
@@ -107,10 +106,19 @@ import TableRow from "./TableRow";
             paginationUsers() {
                 let from = (this.pageNumber - 1) * this.showUsers;
                 let to = from + this.showUsers
-                return this.users_data.slice(from, to);
-            },
+                return this.users_data.slice(from, to).filter(elem => {
+                    return elem.firstName.toLowerCase().includes(this.searchResult.toLowerCase())
+                });
+            }
         },
         methods: {
+            searchClick() {
+                this.searchResult = this.search
+            },
+            searchRemove() {
+                this.search = ''
+                this.searchResult = ''
+            },
             userData(data) {
                 this.userInfo = data
                 this.showUserInfo = true

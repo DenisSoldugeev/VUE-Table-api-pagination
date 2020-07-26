@@ -1,7 +1,7 @@
 <template>
     <tr @click="onClick(rowData)">
         <th scope="row">{{rowData.id}}</th>
-        <td>{{rowData.firstName}}</td>
+        <td>{{rowData.firstName || rowData.name}}</td>
         <td>{{rowData.lastName}}</td>
         <td>{{rowData.email}}</td>
         <td>{{rowData.phone}}</td>
